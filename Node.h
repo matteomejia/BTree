@@ -43,7 +43,7 @@ public:
     // A utility function to insert a new key in the subtree rooted with
     // this node. The assumption is, the node must be non-full when this
     // function is called
-    void insertNonFull(int k) {
+    /*void insertNonFull(int k) {
         // Initialize index as index of rightmost element
         int i = n-1;
 
@@ -80,11 +80,11 @@ public:
             }
         }
         childs[i+1]->insertNonFull(k);
-    }
+    }*/
 
     // A utility function to split the child y of this node. i is index of y in
     // child array C[].  The Child y must be full when this function is called
-    void splitChild(int i, Node *y) {
+    /*void splitChild(int i, Node *y) {
         // Create a new node which is going to store (min_degree-1) keys
         // of y
         Node *z = new Node(y->min_degree, y->isLeaf);
@@ -125,10 +125,9 @@ public:
 
         // Increment count of keys in this node
         n = n + 1;
-    }
+    }*/
 
-    // A function to search a key in the subtree rooted with this node.
-    // returns NULL if k is not present.
+
     Node *search(int k){
         // Find the first key greater than or equal to k
         int i = 0;
