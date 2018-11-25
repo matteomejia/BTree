@@ -5,10 +5,10 @@
 #ifndef BTREE_BTREE_H
 #define BTREE_BTREE_H
 
-#include "Node.h"
+#include "node.h"
 
 class BTree {
-    Node *root;
+    node *root;
     int min_degree;
 public:
     BTree(int min_degree) {
@@ -23,47 +23,37 @@ public:
         }
     }
 
-    Node* search(int k)
+    node* search(int key)
     {
         if(root == nullptr) {
             return nullptr;
         }else {
-            return root->search(k);
+            return root->search(key);
         }
     }
 
-    // The main function that inserts a new key in this B-Tree
-    void insert(int k) {
-        // If tree is empty
+    void insert(int key) {
         if (root == nullptr) {
-            // Allocate memory for root
-            root = new Node(min_degree, true);
-            root->keys[0] = k;  // Insert key
-            root->n = 1;  // Update number of keys in root
-        } else // If tree is not empty{
-            // If root is full, then tree grows in height
+            root = new node(min_degree, true);
+            root->keys[0] = key;
+            root->n = 1;
+        } else
         if (root->n == 2*min_degree-1) {
-            // Allocate memory for new root
-            Node *s = new Node(min_degree, false);
+            node *s = new node(min_degree, false);
 
-            // Make old root as child of new root
             s->childs[0] = root;
 
-            // Split the old root and move 1 key to the new root
-            s->splitChild(0, root);
+            s->split(0, root);
 
-            // New root has two children now.  Decide which of the
-            // two children is going to have new key
             int i = 0;
-            if (s->keys[0] < k) {
+            if (s->keys[0] < key) {
                 i++;
             }
-            s->childs[i]->insertNonFull(k);
+            s->childs[i]->insertNonFull(key);
 
-            // Change root
             root = s;
-        } else {// If root is not full, call insertNonFull for root
-            root->insertNonFull(k);
+        } else {
+            root->insertNonFull(key);
         }
     }
 };

@@ -9,9 +9,8 @@
 
 using namespace std;
 
-// Driver program to test above functions
 int main() {
-    BTree t(3); // A B-Tree with minium degree 3
+    BTree t(3); //El valor es el grado minimo
     t.insert(10);
     t.insert(20);
     t.insert(5);
