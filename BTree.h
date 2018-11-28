@@ -9,10 +9,11 @@
 #include <iostream>
 
 class BTree {
+public:
     Node *root;
     int min_degree;
 public:
-    BTree(int min_degree) {
+    explicit BTree(int min_degree) {
         this->root = nullptr;
         this->min_degree = min_degree;
     }
@@ -37,7 +38,19 @@ public:
         if(root == nullptr) {
             root = new Node(true, min_degree);
             root->keys[0] = key;
-
+            root->nkeys = 1;
+        }
+        else{
+            if(root->is_full()){
+                Node * new_root = new Node(false, min_degree);
+                new_root->childs[0] = root;
+                new_root->split_child(0);
+                new_root->insert(key);
+                root = new_root;
+            }
+            else{
+                root->insert(key);
+            }
         }
     }
 

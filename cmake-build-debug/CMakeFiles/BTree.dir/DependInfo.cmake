@@ -4,12 +4,13 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "C:/Users/matte/Documents/GitHub/BTree/main.cpp" "C:/Users/matte/Documents/GitHub/BTree/cmake-build-debug/CMakeFiles/BTree.dir/main.cpp.obj"
+  "/home/andres4056/Documentos/BTree/main.cpp" "/home/andres4056/Documentos/BTree/cmake-build-debug/CMakeFiles/BTree.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "../."
   )
 
 # Targets to which this target links.

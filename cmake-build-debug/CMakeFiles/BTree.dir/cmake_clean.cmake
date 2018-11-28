@@ -1,9 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/BTree.dir/main.cpp.obj"
+  "CMakeFiles/BTree.dir/main.cpp.o"
   "BTree.pdb"
-  "BTree.exe"
-  "BTree.exe.manifest"
-  "libBTree.dll.a"
+  "BTree"
 )
 
 # Per-language clean rules from dependency scanning.

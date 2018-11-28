@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
 project(BTree)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
-add_executable(BTree main.cpp)
+include_directories(.)
+
+add_executable(BTree
+        BTree.h
+        main.cpp
+        node.h)
