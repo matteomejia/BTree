@@ -48,6 +48,8 @@ int main() {/*
     t.insert(80);
     t.insert(90);
     t.insert(100);
+    t.remove(100);
+    t.remove(50);
 
     t.traverse();
 

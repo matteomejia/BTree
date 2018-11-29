@@ -60,6 +60,7 @@ public:
         return childs[count]->search(key);
     }
 
+
     Node insert(int key){
         int count = 0;
         while(count < nkeys && key > keys[count]) {
@@ -115,6 +116,151 @@ public:
         childs[pos_node_full + 1] = node_der;
         nkeys++;
     }
+
+    void remove(int key){
+
+        Node * current = search(key);
+        if(current) {
+            if (current->isLeaf) {
+
+                int count = 0;
+                while (count < current->nkeys && key > current->keys[count]) {
+                    count++;
+                }
+
+                for(int i = count; i < current->nkeys; i++){
+                    if(i != current->nkeys-1)
+                        current->keys[i] = current->keys[i+1];
+                    else
+                        current->keys[i] = 0;
+                }
+
+                current->nkeys--;
+
+                review_bro(current,key);
+                }
+            }
+        }
+
+
+    void review_bro(Node * current, int key_d){
+
+        if(current->nkeys<min_degree-1){
+            Node * temp = this;
+            int count = 0;
+            while(!temp->isLeaf) {
+                count = 0;
+                while (count < temp->nkeys && key_d > temp->keys[count]) {
+                    count++;
+                }
+                if(temp->childs[count] == current)
+                    break;
+                temp = temp->childs[count];
+            }
+
+            //verificamos si uno de los hermanos tiene mas del minimo de keys
+            int itemp =0;
+            if(count>0 && temp->childs[count-1]->nkeys > min_degree - 1){
+                itemp = temp->keys[count-1];
+                temp->keys[count-1] = temp->childs[count-1]->keys[temp->childs[count-1]->nkeys-1];
+                temp->childs[count-1]->keys[temp->childs[count-1]->nkeys-1] = 0;
+                temp->childs[count - 1]->nkeys--;
+                for(int j = temp->childs[count]->nkeys-1;j>=0;j--){
+                    temp->childs[count]->keys[j+1] = temp->childs[count]->keys[j];
+                }
+                temp->childs[count]->keys[0] = itemp;
+                temp->childs[count]->nkeys++;
+            }
+            else if(count+1<=temp->nkeys && temp->childs[count+1]->nkeys > min_degree - 1){
+                itemp = temp->keys[count];
+                temp->keys[count] = temp->childs[count+1]->keys[0];
+                for(int j = 0; j<temp->childs[count+1]->nkeys;j++){
+                    temp->childs[count+1]->keys[j] = temp->childs[count]->keys[j+1];
+                }
+                temp->childs[count+1]->keys[temp->childs[count+1]->nkeys-1] = 0;
+                temp->childs[count+1]->nkeys--;
+
+                temp->childs[count]->keys[temp->childs[count]->nkeys] = itemp;
+                temp->childs[count]->nkeys++;
+            }
+            else{
+                merge(temp);
+            }
+        }
+    }
+
+    void merge(Node *current){
+        int count = 0;
+        for(; count <current->nkeys +1;count++){
+            if(current->childs[count]->nkeys < min_degree-1)
+                break;
+        }
+        int itemp=0;
+        if(count>0 && current->childs[count-1]->nkeys == min_degree - 1){
+            itemp = current->keys[count-1];
+            current->childs[count-1]->keys[current->childs[count-1]->nkeys] = itemp;
+            current->childs[count-1]->nkeys++;
+            int ind = current->childs[count-1]->nkeys;
+            for(int i = 0; i < current->childs[count]->nkeys; i++){
+                current->childs[count-1]->keys[i+ind] =
+                        current->childs[count]->keys[i];
+                current->childs[count-1]->nkeys++;
+            }
+
+            for(int i = count - 1; i <current->nkeys-1;i++){
+                current->keys[i] = current->keys[i+1];
+
+            }
+            current->keys[current->nkeys-1] = 0;
+            for(int i = count; i < current->nkeys; i++){
+                current->childs[i] = current->childs[i+1];
+            }
+            current->nkeys--;
+            current->childs[nkeys+1] = nullptr;
+
+        }
+        else if(count+1<=current->nkeys){
+            if(count == 0) {
+                itemp = current->keys[0]; //60
+                current->childs[0]->keys[current->childs[0]->nkeys] = itemp;
+                current->childs[0]->nkeys++;
+                int ind = current->childs[0]->nkeys;
+                for(int i = 0; i < current->childs[1]->nkeys; i++){
+                    current->childs[0]->keys[i+ind] =
+                            current->childs[1]->keys[i];
+                    current->childs[0]->nkeys++;
+                }
+
+                for(int i = 0; i <current->nkeys-1;i++){
+                    current->keys[i] = current->keys[i+1];
+
+                }
+
+                current->keys[current->nkeys-1] = 0;
+                for(int i = 1; i < current->nkeys; i++){
+                    current->childs[i] = current->childs[i+1];
+                }
+                current->nkeys--;
+                current->childs[nkeys+1] = nullptr;
+
+            }
+        }
+
+        if(current->nkeys < min_degree - 1) {
+            Node *temp = this;
+            while (!temp->isLeaf) {
+                count = 0;
+                while (count < temp->nkeys && current->keys[0] > temp->keys[count]) {
+                    count++;
+                }
+                if (temp->childs[count] == current)
+                    break;
+                temp = temp->childs[count];
+            }
+            merge(temp);
+        }
+    }
+
 };
 
 #endif //BTREE_NODE_H

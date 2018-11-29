@@ -109,6 +109,12 @@ public:
 
     }
 
+    void remove(int key){
+        if(root){
+            root->remove(key);
+        }
+    }
+
 };
 
 #endif //BTREE_BTREE_H
