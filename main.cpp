@@ -37,7 +37,7 @@ int main() {/*
         cout << "\nNot Present";
     }*/
 
-    BTree t(3); //El valor es el grado minimo
+    BTree t(2); //El valor es el grado minimo
     t.insert(10);
     t.insert(20);
     t.insert(30);
@@ -46,11 +46,10 @@ int main() {/*
     t.insert(60);
     t.insert(70);
     t.insert(80);
-    t.traverse();
-    std::cout<<"\n";
     t.insert(90);
+    t.insert(100);
+
     t.traverse();
 
     return 0;
 }
-

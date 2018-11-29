@@ -29,16 +29,17 @@ public:
 
     void traverse() {
         int i = 0;
+
+        std::cout<<"keys:";
         for(i = 0; i < nkeys; ++i) {
-            if(!isLeaf) {
-                childs[i]->traverse();
-            }
             std::cout << " " << keys[i];
         }
-        std::cout<<"\n";
 
         if(!isLeaf) {
-            childs[i]->traverse();
+            for (i = 0; i < nkeys + 1; ++i) {
+                std::cout << "\nHijo " << i << ":\n";
+                childs[i]->traverse();
+            }
         }
     }
 
@@ -74,13 +75,7 @@ public:
             }
             nkeys++;
         }
-        else if(!isLeaf && !childs[count]->is_full()){
-            childs[count]->insert(key);
-        }
-        else if(!isLeaf && childs[count]->is_full()){
-            split_child(count);
-            if(key>keys[count])
-                count++;
+        else if(!isLeaf) {
             childs[count]->insert(key);
         }
     }
@@ -89,7 +84,7 @@ public:
         return nkeys >= 2 * min_degree - 1;
     }
 
-    void * split_child(int pos_node_full){
+    void split_child(int pos_node_full){
         Node * node_izq, *node_der;
         node_izq = new Node (childs[pos_node_full]->isLeaf, min_degree);
         node_der = new Node (childs[pos_node_full]->isLeaf, min_degree);
