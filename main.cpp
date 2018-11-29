@@ -38,19 +38,21 @@ int main() {/*
     }*/
 
     BTree t(2); //El valor es el grado minimo
+    t.insert(1);
+    t.insert(2);
+    t.insert(3);
+    t.insert(4);
+    t.insert(5);
+    t.insert(6);
+    t.insert(7);
+    t.insert(8);
+    t.insert(9);
     t.insert(10);
-    t.insert(20);
-    t.insert(30);
-    t.insert(40);
-    t.insert(50);
-    t.insert(60);
-    t.insert(70);
-    t.insert(80);
-    t.insert(90);
-    t.insert(100);
-    t.remove(100);
-    t.remove(50);
 
+    t.remove(7);
+    t.remove(8);
+    t.remove(9);
+    t.remove(4);
     t.traverse();
 
     return 0;

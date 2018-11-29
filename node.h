@@ -136,8 +136,9 @@ public:
                 }
 
                 current->nkeys--;
-
                 review_bro(current,key);
+                } else{
+                    remove_internal_node(key,current);
                 }
             }
         }
@@ -165,7 +166,7 @@ public:
                 temp->keys[count-1] = temp->childs[count-1]->keys[temp->childs[count-1]->nkeys-1];
                 temp->childs[count-1]->keys[temp->childs[count-1]->nkeys-1] = 0;
                 temp->childs[count - 1]->nkeys--;
-                for(int j = temp->childs[count]->nkeys-1;j>=0;j--){
+                for(int j = temp->childs[count]->nkeys-2;j>=0;j--){
                     temp->childs[count]->keys[j+1] = temp->childs[count]->keys[j];
                 }
                 temp->childs[count]->keys[0] = itemp;
@@ -174,8 +175,8 @@ public:
             else if(count+1<=temp->nkeys && temp->childs[count+1]->nkeys > min_degree - 1){
                 itemp = temp->keys[count];
                 temp->keys[count] = temp->childs[count+1]->keys[0];
-                for(int j = 0; j<temp->childs[count+1]->nkeys;j++){
-                    temp->childs[count+1]->keys[j] = temp->childs[count]->keys[j+1];
+                for(int j = 0; j<temp->childs[count+1]->nkeys-1;j++){
+                    temp->childs[count+1]->keys[j] = temp->childs[count+1]->keys[j+1];
                 }
                 temp->childs[count+1]->keys[temp->childs[count+1]->nkeys-1] = 0;
                 temp->childs[count+1]->nkeys--;
@@ -258,6 +259,41 @@ public:
                 temp = temp->childs[count];
             }
             merge(temp);
+        }
+    }
+
+    void remove_internal_node(int key, Node * key_node){
+        int count = 0;
+        for(; count < key_node->nkeys;count++){
+            if(key_node->keys[count] == key)
+                break;
+        }
+
+        if(key_node->childs[count]->nkeys > min_degree - 1){
+            key_node->keys[count] = key_node->childs[count]->keys[key_node->childs[count]->nkeys-1];
+            key_node->childs[count]->keys[key_node->childs[count]->nkeys-1] = 0;
+            key_node->childs[count]->nkeys--;
+        }
+        else if (key_node->childs[count+1]->nkeys > min_degree - 1){
+            key_node->keys[count] = key_node->childs[count+1]->keys[0];
+            for(int i = 0; i < key_node->childs[count+1]->nkeys-1; i++){
+                key_node->childs[count+1]->keys[i] = key_node->childs[count+1]->keys[i+1];
+            }
+            key_node->childs[count]->keys[key_node->childs[count]->nkeys-1] = 0;
+            key_node->childs[count]->nkeys--;
+        }
+        else {
+            for(int i = 0; i < min_degree - 1; i++){
+                key_node->childs[count]->keys[min_degree-1+i] = key_node->childs[count+1]->keys[i];
+                key_node->childs[count]->nkeys++;
+            }
+            for (int j = count; j < key_node->nkeys - 1; j++) {
+                key_node->keys[j] = key_node->keys[j+1];
+                key_node->childs[j+1] = key_node->childs[j+2];
+            }
+            key_node->keys[key_node->nkeys - 1] = 0;
+            key_node->nkeys--;
+            key_node->childs[key_node->nkeys] = nullptr;
         }
     }
 
